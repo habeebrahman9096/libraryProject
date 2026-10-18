@@ -31,6 +31,7 @@
             {{/if}}
           </div>
           <button type="submit" class="btn btn-primary search-submit-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <span data-i18n="btn_search">Search</span>
           </button>
         </div>
@@ -40,7 +41,7 @@
           <div class="filter-col">
             <label class="filter-label" data-i18n="filter_category">Category</label>
             <select name="category" class="form-select filter-select" onchange="document.getElementById('searchForm').submit()">
-              <option value="" data-i18n="opt_all_categories">All Categories (Optional)</option>
+              <option value="" data-i18n="opt_all_categories">All Categories</option>
               {{#each categories}}
                 <option value="{{this}}" {{#if (eq ../query.category this)}}selected{{/if}}>{{this}}</option>
               {{/each}}
@@ -50,7 +51,7 @@
           <div class="filter-col">
             <label class="filter-label" data-i18n="filter_shelf">Exact Shelf</label>
             <select name="shelfNumber" class="form-select filter-select" onchange="document.getElementById('searchForm').submit()">
-              <option value="" data-i18n="opt_all_shelves">All Shelves (Optional)</option>
+              <option value="" data-i18n="opt_all_shelves">All Shelves</option>
               {{#each shelves}}
                 <option value="{{this}}" {{#if (eq ../query.shelfNumber this)}}selected{{/if}}>Shelf: {{this}}</option>
               {{/each}}
