@@ -600,43 +600,49 @@ p {
 }
 
 /* ==========================================================================
-   Hero & Public Search Area with Arabic Library Background
+   Main Page Wrapper & Hero with User's Arabic Bookshelf Background
    ========================================================================== */
+.main-page-wrapper {
+  position: relative;
+  background-image: url('/images/hero-bookshelf-bg.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
 .hero-section {
   position: relative;
-  background-image: url('/images/arabic-library-bg.jpg');
+  background-image: url('/images/hero-bookshelf-bg.jpg');
   background-size: cover;
-  background-position: center center;
+  background-position: center 25%;
   background-repeat: no-repeat;
   border-bottom: 1px solid var(--border-light);
   padding: 4.5rem 0 3.75rem 0;
   overflow: hidden;
 }
 
+/* Reduced Opacity Overlays: Slight reduction only so books are clearly visible */
 .hero-section::before {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.84) 0%,
-    rgba(255, 255, 255, 0.91) 45%,
-    rgba(248, 250, 252, 0.97) 100%
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.40) 50%,
+    rgba(248, 250, 252, 0.55) 100%
   );
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(1.5px);
   z-index: 1;
 }
 
 [data-theme="dark"] .hero-section::before {
   background: linear-gradient(
     180deg,
-    rgba(7, 13, 24, 0.80) 0%,
-    rgba(7, 13, 24, 0.89) 45%,
-    rgba(7, 13, 24, 0.98) 100%
+    rgba(7, 13, 24, 0.35) 0%,
+    rgba(7, 13, 24, 0.45) 50%,
+    rgba(7, 13, 24, 0.65) 100%
   );
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(1.5px);
 }
 
 .hero-container {
@@ -649,8 +655,21 @@ p {
 }
 
 .hero-content {
-  max-width: 720px;
-  margin-bottom: 2.25rem;
+  max-width: 740px;
+  margin-bottom: 2rem;
+  padding: 1.5rem 2.25rem;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="dark"] .hero-content {
+  background: rgba(15, 23, 42, 0.82);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
 .badge-subtle {
@@ -915,8 +934,24 @@ p {
    Book Catalogue & Cards
    ========================================================================== */
 .catalogue-section {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(248, 250, 252, 0.90) 0%,
+    rgba(255, 255, 255, 0.96) 100%
+  );
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   padding: 2.5rem 0 4rem 0;
   flex: 1;
+}
+
+[data-theme="dark"] .catalogue-section {
+  background: linear-gradient(
+    180deg,
+    rgba(7, 13, 24, 0.88) 0%,
+    rgba(15, 23, 42, 0.95) 100%
+  );
 }
 
 .results-meta {
