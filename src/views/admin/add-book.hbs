@@ -1,0 +1,125 @@
+<div class="container section-padding-sm">
+  <div class="breadcrumb">
+    <a href="/admin/dashboard">&larr; Back to Dashboard</a>
+    <span>/</span>
+    <span>Add New Book</span>
+  </div>
+
+  <div class="form-card-container">
+    <div class="form-card">
+      <div class="form-header">
+        <div class="form-header-icon bg-emerald-subtle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </div>
+        <div>
+          <h1 class="form-title">Add Book to Library</h1>
+          <p class="form-subtitle">Record book information and assign it to its exact shelf location.</p>
+        </div>
+      </div>
+
+      <form action="/admin/books" method="POST" class="book-form">
+        <div class="form-group">
+          <label for="bookName" class="form-label required">Book Name / Title</label>
+          <input 
+            type="text" 
+            id="bookName" 
+            name="bookName" 
+            class="form-control" 
+            placeholder="e.g. Sahih al-Bukhari, Riyad as-Salihin, Ihya Ulum al-Din" 
+            value="{{formData.bookName}}"
+            required
+            autofocus
+          >
+          <span class="form-hint">Enter the full, official title in English, Arabic, or transliteration.</span>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="author" class="form-label required">Author / Scholar</label>
+            <input 
+              type="text" 
+              id="author" 
+              name="author" 
+              class="form-control" 
+              placeholder="e.g. Imam al-Bukhari, Imam an-Nawawi, Imam al-Ghazali" 
+              value="{{formData.author}}"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="category" class="form-label required">Category / Subject</label>
+            <input 
+              type="text" 
+              id="category" 
+              name="category" 
+              class="form-control" 
+              list="categorySuggestions" 
+              placeholder="e.g. Hadith, Fiqh, Tafsir, Aqeedah, Seerah, Arabic" 
+              value="{{formData.category}}"
+              required
+            >
+            <datalist id="categorySuggestions">
+              {{#each existingCategories}}
+                <option value="{{this}}"></option>
+              {{/each}}
+              <option value="Hadith"></option>
+              <option value="Fiqh"></option>
+              <option value="Tafsir"></option>
+              <option value="Aqeedah"></option>
+              <option value="Seerah"></option>
+              <option value="History"></option>
+              <option value="Tasawwuf"></option>
+              <option value="Arabic Grammar"></option>
+            </datalist>
+            <span class="form-hint">Type a new category or select an existing one.</span>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="libraryCode" class="form-label required">Library Code (Unique ID)</label>
+            <input 
+              type="text" 
+              id="libraryCode" 
+              name="libraryCode" 
+              class="form-control uppercase-input" 
+              placeholder="e.g. HDTH-001, FQH-104, TAF-050" 
+              value="{{formData.libraryCode}}"
+              required
+            >
+            <span class="form-hint">Must be a unique inventory tracking identifier.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="shelfNumber" class="form-label required">Shelf Number (Physical Location)</label>
+            <input 
+              type="text" 
+              id="shelfNumber" 
+              name="shelfNumber" 
+              class="form-control uppercase-input" 
+              list="shelfSuggestions"
+              placeholder="e.g. A-1, B-04, C-12, SHELF-3" 
+              value="{{formData.shelfNumber}}"
+              required
+            >
+            <datalist id="shelfSuggestions">
+              {{#each existingShelves}}
+                <option value="{{this}}"></option>
+              {{/each}}
+            </datalist>
+            <span class="form-hint">Exact shelf number where patrons can find this volume.</span>
+          </div>
+        </div>
+
+        <div class="form-actions-bar">
+          <a href="/admin/dashboard" class="btn btn-outline">Cancel</a>
+          <button type="submit" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+            Save Book Record
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

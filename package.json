@@ -1,0 +1,30 @@
+{
+  "name": "islamic-library-system",
+  "version": "1.0.0",
+  "description": "Islamic Library Book Finding and Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node seed.js"
+  },
+  "keywords": [
+    "library",
+    "mongodb",
+    "express",
+    "handlebars",
+    "shelf-finder"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-handlebars": "^8.0.1",
+    "express-session": "^1.18.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.8.4"
+  }
+}

@@ -1,0 +1,104 @@
+<div class="container section-padding">
+  <div class="breadcrumb">
+    <a href="/">&larr; Back to Catalogue</a>
+    <span>/</span>
+    <span>{{book.bookName}}</span>
+  </div>
+
+  <div class="book-details-layout">
+    <!-- Main Book Card -->
+    <div class="book-details-card">
+      <!-- High visibility shelf indicator -->
+      <div class="shelf-indicator-banner">
+        <div class="shelf-indicator-badge">
+          <span class="shelf-indicator-label">PHYSICAL LOCATION</span>
+          <span class="shelf-indicator-val">SHELF {{book.shelfNumber}}</span>
+        </div>
+        <p class="shelf-indicator-help">
+          Located in the library stacks on <strong>Shelf {{book.shelfNumber}}</strong> under catalog reference <strong>#{{book.libraryCode}}</strong>.
+        </p>
+      </div>
+
+      <div class="book-details-content">
+        <div class="book-header-tags">
+          <span class="category-tag lg">{{book.category}}</span>
+          <span class="code-badge lg">Code: {{book.libraryCode}}</span>
+        </div>
+
+        <h1 class="book-title-lg">{{book.bookName}}</h1>
+
+        <div class="author-block">
+          <span class="author-label">Author / Compiler:</span>
+          <span class="author-name-lg">{{book.author}}</span>
+        </div>
+
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="detail-label">Shelf Number</span>
+            <span class="detail-value highlight">Shelf {{book.shelfNumber}}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Library Catalog Code</span>
+            <span class="detail-value monospace">{{book.libraryCode}}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Subject Category</span>
+            <span class="detail-value">{{book.category}}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Cataloged On</span>
+            <span class="detail-value">{{formatDate book.createdAt}}</span>
+          </div>
+        </div>
+
+        <div class="details-actions">
+          <a href="/?shelfNumber={{book.shelfNumber}}" class="btn btn-outline">
+            Browse All Books on Shelf {{book.shelfNumber}}
+          </a>
+
+          {{#if isAuthenticated}}
+            <a href="/admin/books/{{book._id}}/edit" class="btn btn-primary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              Edit Book (Admin)
+            </a>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar: Other books on this exact shelf -->
+    <aside class="shelf-sidebar">
+      <div class="sidebar-card">
+        <h3 class="sidebar-title">
+          Also on Shelf {{book.shelfNumber}}
+        </h3>
+        <p class="sidebar-subtitle">Neighboring volumes in the same physical stack</p>
+
+        {{#if sameShelfBooks.length}}
+          <ul class="shelf-neighbor-list">
+            {{#each sameShelfBooks}}
+              <li class="neighbor-item">
+                <a href="/books/{{_id}}" class="neighbor-link">
+                  <span class="neighbor-title">{{bookName}}</span>
+                  <span class="neighbor-author">{{author}}</span>
+                  <span class="neighbor-code">#{{libraryCode}}</span>
+                </a>
+              </li>
+            {{/each}}
+          </ul>
+        {{else}}
+          <p class="empty-text">No other books currently registered on this shelf.</p>
+        {{/if}}
+
+        <div class="sidebar-footer">
+          <a href="/?shelfNumber={{book.shelfNumber}}" class="btn btn-sm btn-outline-full">
+            View Complete Shelf {{book.shelfNumber}}
+          </a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

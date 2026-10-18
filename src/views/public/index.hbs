@@ -1,0 +1,166 @@
+<section class="hero-section">
+  <div class="container hero-container">
+    <div class="hero-content">
+      <span class="badge badge-subtle">Islamic Library Catalogue</span>
+      <h1 class="hero-title">Find Books &amp; Locate Exact Shelves</h1>
+      <p class="hero-description">
+        Quickly discover literature by book title, author, category, or library code. All search criteria are completely optional.
+      </p>
+    </div>
+
+    <!-- Smart Search & Filter Form -->
+    <div class="search-card">
+      <form action="/" method="GET" class="search-form" id="searchForm">
+        <!-- Quick Universal Search Bar -->
+        <div class="search-bar-wrap">
+          <div class="search-input-group">
+            <span class="search-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </span>
+            <input 
+              type="text" 
+              name="q" 
+              class="form-control search-input" 
+              placeholder="Search by book name, author, category, library code, or shelf number..." 
+              value="{{query.q}}"
+              autocomplete="off"
+            >
+            {{#if query.q}}
+              <a href="/" class="clear-search-btn" title="Clear search">&times;</a>
+            {{/if}}
+          </div>
+          <button type="submit" class="btn btn-primary search-submit-btn">
+            <span>Search</span>
+          </button>
+        </div>
+
+        <!-- Optional Detailed Filters (Fully Optional) -->
+        <div class="filter-row">
+          <div class="filter-col">
+            <label class="filter-label">Category</label>
+            <select name="category" class="form-select filter-select" onchange="document.getElementById('searchForm').submit()">
+              <option value="">All Categories (Optional)</option>
+              {{#each categories}}
+                <option value="{{this}}" {{#if (eq ../query.category this)}}selected{{/if}}>{{this}}</option>
+              {{/each}}
+            </select>
+          </div>
+
+          <div class="filter-col">
+            <label class="filter-label">Exact Shelf</label>
+            <select name="shelfNumber" class="form-select filter-select" onchange="document.getElementById('searchForm').submit()">
+              <option value="">All Shelves (Optional)</option>
+              {{#each shelves}}
+                <option value="{{this}}" {{#if (eq ../query.shelfNumber this)}}selected{{/if}}>Shelf: {{this}}</option>
+              {{/each}}
+            </select>
+          </div>
+
+          <div class="filter-col">
+            <label class="filter-label">Author</label>
+            <input 
+              type="text" 
+              name="author" 
+              class="form-control filter-input" 
+              placeholder="Author name..." 
+              value="{{query.author}}"
+            >
+          </div>
+
+          <div class="filter-col">
+            <label class="filter-label">Sort By</label>
+            <select name="sort" class="form-select filter-select" onchange="document.getElementById('searchForm').submit()">
+              <option value="newest" {{#if (eq query.sort 'newest')}}selected{{/if}}>Recently Added</option>
+              <option value="title_asc" {{#if (eq query.sort 'title_asc')}}selected{{/if}}>Book Title (A-Z)</option>
+              <option value="author_asc" {{#if (eq query.sort 'author_asc')}}selected{{/if}}>Author (A-Z)</option>
+              <option value="shelf_asc" {{#if (eq query.sort 'shelf_asc')}}selected{{/if}}>Shelf Number</option>
+            </select>
+          </div>
+        </div>
+
+        {{#if hasActiveFilters}}
+          <div class="active-filters-bar">
+            <span class="active-filters-label">Active Filters:</span>
+            {{#if query.q}}<span class="filter-chip">Query: "{{query.q}}"</span>{{/if}}
+            {{#if query.category}}<span class="filter-chip">Category: {{query.category}}</span>{{/if}}
+            {{#if query.shelfNumber}}<span class="filter-chip">Shelf: {{query.shelfNumber}}</span>{{/if}}
+            {{#if query.author}}<span class="filter-chip">Author: {{query.author}}</span>{{/if}}
+            <a href="/" class="reset-link">Reset all filters</a>
+          </div>
+        {{/if}}
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Book Catalogue Section -->
+<section class="catalogue-section">
+  <div class="container">
+    <div class="results-meta">
+      <div class="results-count">
+        <strong>{{totalCount}}</strong> {{#if (eq totalCount 1)}}book{{else}}books{{/if}} found in library
+      </div>
+      <div class="results-actions">
+        {{#if isAuthenticated}}
+          <a href="/admin/books/new" class="btn btn-sm btn-outline-primary">+ Add New Book</a>
+        {{/if}}
+      </div>
+    </div>
+
+    {{#if books.length}}
+      <div class="books-grid">
+        {{#each books}}
+          <article class="book-card">
+            <!-- Exact Shelf Number (Primary Highlight) -->
+            <div class="shelf-banner" title="Book Physical Location">
+              <span class="shelf-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+              </span>
+              <span class="shelf-text">Shelf: <strong>{{shelfNumber}}</strong></span>
+            </div>
+
+            <div class="book-card-body">
+              <div class="book-meta-top">
+                <span class="category-tag">{{category}}</span>
+                <span class="code-badge" title="Library Catalog Code">#{{libraryCode}}</span>
+              </div>
+
+              <h2 class="book-title">
+                <a href="/books/{{_id}}">{{bookName}}</a>
+              </h2>
+
+              <p class="book-author">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>{{author}}</span>
+              </p>
+            </div>
+
+            <div class="book-card-footer">
+              <div class="shelf-locator-hint">
+                <span class="location-dot"></span>
+                <span>Go to <strong>Shelf {{shelfNumber}}</strong></span>
+              </div>
+              <a href="/books/{{_id}}" class="btn btn-sm btn-outline">Details &rarr;</a>
+            </div>
+          </article>
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </div>
+        <h3 class="empty-title">No books matched your criteria</h3>
+        <p class="empty-desc">
+          Try clearing your search query or selecting a different category or shelf.
+        </p>
+        <div class="empty-actions">
+          <a href="/" class="btn btn-primary">View All Available Books</a>
+          {{#if isAuthenticated}}
+            <a href="/admin/books/new" class="btn btn-outline">+ Add This Book</a>
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</section>

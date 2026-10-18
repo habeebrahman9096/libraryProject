@@ -1,0 +1,126 @@
+<div class="container section-padding-sm">
+  <div class="breadcrumb">
+    <a href="/admin/dashboard">&larr; Back to Dashboard</a>
+    <span>/</span>
+    <span>Edit Book: {{book.bookName}}</span>
+  </div>
+
+  <div class="form-card-container">
+    <div class="form-card">
+      <div class="form-header">
+        <div class="form-header-icon bg-blue-subtle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        </div>
+        <div>
+          <h1 class="form-title">Edit Book Information</h1>
+          <p class="form-subtitle">Update record details or adjust shelf assignment.</p>
+        </div>
+      </div>
+
+      <form action="/admin/books/{{book._id}}?_method=PUT" method="POST" class="book-form">
+        <div class="form-group">
+          <label for="bookName" class="form-label required">Book Name / Title</label>
+          <input 
+            type="text" 
+            id="bookName" 
+            name="bookName" 
+            class="form-control" 
+            value="{{book.bookName}}"
+            required
+            autofocus
+          >
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="author" class="form-label required">Author / Scholar</label>
+            <input 
+              type="text" 
+              id="author" 
+              name="author" 
+              class="form-control" 
+              value="{{book.author}}"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="category" class="form-label required">Category / Subject</label>
+            <input 
+              type="text" 
+              id="category" 
+              name="category" 
+              class="form-control" 
+              list="categorySuggestions" 
+              value="{{book.category}}"
+              required
+            >
+            <datalist id="categorySuggestions">
+              {{#each existingCategories}}
+                <option value="{{this}}"></option>
+              {{/each}}
+            </datalist>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="libraryCode" class="form-label required">Library Code (Unique ID)</label>
+            <input 
+              type="text" 
+              id="libraryCode" 
+              name="libraryCode" 
+              class="form-control uppercase-input" 
+              value="{{book.libraryCode}}"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="shelfNumber" class="form-label required">Shelf Number (Physical Location)</label>
+            <input 
+              type="text" 
+              id="shelfNumber" 
+              name="shelfNumber" 
+              class="form-control uppercase-input" 
+              list="shelfSuggestions"
+              value="{{book.shelfNumber}}"
+              required
+            >
+            <datalist id="shelfSuggestions">
+              {{#each existingShelves}}
+                <option value="{{this}}"></option>
+              {{/each}}
+            </datalist>
+          </div>
+        </div>
+
+        <div class="form-actions-bar">
+          <div class="actions-left">
+            <a href="/admin/dashboard" class="btn btn-outline">Cancel</a>
+          </div>
+          <div class="actions-right">
+            <button type="submit" class="btn btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Update Book
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Separate Delete Action Container with Confirmation -->
+      <div class="danger-zone">
+        <div class="danger-text">
+          <strong>Delete this book record</strong>
+          <span>This will permanently remove this book from the catalogue and shelf records.</span>
+        </div>
+        <form action="/admin/books/{{book._id}}?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to permanently delete \'{{book.bookName}}\'?');">
+          <button type="submit" class="btn btn-danger btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            Delete Book
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
