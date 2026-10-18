@@ -1,9 +1,11 @@
 <div class="admin-wrapper container">
+  {{> admin-nav}}
+
   <!-- Dashboard Header -->
   <div class="dashboard-header">
     <div>
-      <h1 class="page-title">Library Administration Dashboard</h1>
-      <p class="page-subtitle">Manage inventory, catalog records, and physical shelf assignments.</p>
+      <h1 class="page-title" data-i18n="admin_dashboard_title">Library Administration Dashboard</h1>
+      <p class="page-subtitle" data-i18n="admin_dashboard_subtitle">Manage inventory, catalog records, and physical shelf assignments.</p>
     </div>
     <div class="dashboard-header-actions">
       <a href="/admin/books/sample-csv" class="btn btn-outline" download="sample_books_template.csv" title="Download sample CSV template">

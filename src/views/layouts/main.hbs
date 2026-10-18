@@ -1,16 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{#if title}}{{title}} | {{/if}}Islamic Library</title>
   
-  <!-- Modern Clean Typography Fonts with Unicode Support -->
+  <!-- Prevent theme / direction flicker on initial load -->
+  <script>
+    (function() {
+      try {
+        const savedTheme = localStorage.getItem('library-theme') || 'light';
+        const savedLang = localStorage.getItem('library-lang') || 'en';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.documentElement.setAttribute('lang', savedLang);
+        document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Typography Fonts (English, Malayalam & Arabic Cairo/Amiri) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Main Clean White Theme Stylesheet -->
+  <!-- Main Stylesheet (Supports Light, Dark & RTL Arabic modes) -->
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body id="top">
@@ -26,7 +39,7 @@
 
   {{> footer}}
 
-  <!-- Interactive JavaScript for Live Filter, Modals & Mobile Menu -->
+  <!-- Interactive JavaScript for Live Filter, Dark Mode, Arabic & Mobile Menu -->
   <script src="/js/main.js"></script>
 </body>
 </html>

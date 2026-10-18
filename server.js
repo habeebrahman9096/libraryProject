@@ -22,6 +22,14 @@ const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/islamicLi
 const sessionCookieName = process.env.SESSION_NAME || 'LIBRARY_SESSION';
 const sessionSecret = process.env.SESSION_SECRET || 'islamic_library_fallback_secret_key_2026';
 
+// Global error handlers to prevent unhandled driver rejections from crashing the process
+process.on('unhandledRejection', (reason) => {
+  console.warn('[Process Warning] Handled unhandled rejection:', reason && reason.message ? reason.message : reason);
+});
+process.on('uncaughtException', (err) => {
+  console.warn('[Process Warning] Handled uncaught exception:', err.message);
+});
+
 // CRITICAL FOR VERCEL & PROXIES: Trust reverse proxy so HTTPS cookies and redirects work properly
 app.set('trust proxy', 1);
 

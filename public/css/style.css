@@ -68,6 +68,41 @@
   --header-height: 72px;
 }
 
+/* ==========================================================================
+   Dark Mode Theme Overrides
+   ========================================================================== */
+[data-theme="dark"] {
+  --bg-body: #0b1120;
+  --bg-surface: #1e293b;
+  --bg-subtle: #0f172a;
+  --bg-muted: #334155;
+  
+  --border-light: #334155;
+  --border-focus: #38bdf8;
+  
+  --text-main: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-light: #64748b;
+  
+  --primary: #38bdf8;
+  --primary-hover: #0ea5e9;
+  --primary-text: #0f172a;
+  
+  --shelf-bg: rgba(6, 95, 70, 0.35);
+  --shelf-border: rgba(52, 211, 153, 0.4);
+  --shelf-text: #a7f3d0;
+  --shelf-badge: #34d399;
+  
+  --code-bg: #0f172a;
+  --code-border: #334155;
+  --code-text: #e2e8f0;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.6);
+}
+
 /* Base Reset & Box Sizing */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -239,6 +274,147 @@ p {
   height: 2px;
   background-color: var(--text-main);
   transition: all 0.25s ease;
+}
+
+/* Theme & Language Toggle Buttons */
+.theme-toggle-btn, .lang-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.8rem;
+  font-family: var(--font-sans);
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.theme-toggle-btn:hover, .lang-toggle-btn:hover {
+  background-color: var(--bg-muted);
+  color: var(--text-main);
+  border-color: var(--border-focus);
+}
+
+.theme-icon-light {
+  display: flex;
+  align-items: center;
+  color: #f59e0b;
+}
+
+.theme-icon-dark {
+  display: none;
+  align-items: center;
+  color: #38bdf8;
+}
+
+[data-theme="dark"] .theme-icon-light {
+  display: none;
+}
+
+[data-theme="dark"] .theme-icon-dark {
+  display: flex;
+}
+
+/* ==========================================================================
+   Admin Sub-Navigation Toolbar (Inside Admin Pages)
+   ========================================================================== */
+.admin-subnav-wrapper {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-subnav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-subnav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: max-content;
+  width: 100%;
+}
+
+.admin-tab-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.admin-tab-link:hover {
+  color: var(--text-main);
+  background-color: var(--bg-subtle);
+}
+
+.admin-tab-link.active {
+  color: var(--text-main);
+  background-color: var(--bg-muted);
+  border-color: var(--border-light);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   Arabic RTL Mode Support
+   ========================================================================== */
+[dir="rtl"] body {
+  font-family: 'Cairo', 'Amiri', 'Plus Jakarta Sans', sans-serif;
+}
+
+[dir="rtl"] .search-icon {
+  right: 1rem;
+  left: auto;
+}
+
+[dir="rtl"] .search-input {
+  padding: 0.85rem 2.85rem 0.85rem 2.5rem;
+}
+
+[dir="rtl"] .clear-search-btn {
+  left: 1rem;
+  right: auto;
+}
+
+[dir="rtl"] .input-icon {
+  right: 0.85rem;
+  left: auto;
+}
+
+[dir="rtl"] .input-with-icon .form-control {
+  padding-right: 2.6rem;
+  padding-left: 0.85rem;
+}
+
+[dir="rtl"] .data-table {
+  text-align: right;
+}
+
+[dir="rtl"] .actions-cell {
+  justify-content: flex-start;
+}
+
+[dir="rtl"] .breadcrumb span {
+  display: inline-block;
 }
 
 /* ==========================================================================

@@ -1,9 +1,9 @@
 <section class="hero-section">
   <div class="container hero-container">
     <div class="hero-content">
-      <span class="badge badge-subtle">Islamic Library Catalogue</span>
-      <h1 class="hero-title">Find Books &amp; Locate Exact Shelves</h1>
-      <p class="hero-description">
+      <span class="badge badge-subtle" data-i18n="hero_badge">Islamic Library Catalogue</span>
+      <h1 class="hero-title" data-i18n="hero_title">Find Books &amp; Locate Exact Shelves</h1>
+      <p class="hero-description" data-i18n="hero_desc">
         Quickly discover literature by book title, author, category, or library code. All search criteria are completely optional.
       </p>
     </div>
@@ -22,6 +22,7 @@
               name="q" 
               class="form-control search-input" 
               placeholder="Search by book name, author, category, library code, or shelf number..." 
+              data-i18n-placeholder="search_placeholder"
               value="{{query.q}}"
               autocomplete="off"
             >
@@ -30,16 +31,16 @@
             {{/if}}
           </div>
           <button type="submit" class="btn btn-primary search-submit-btn">
-            <span>Search</span>
+            <span data-i18n="btn_search">Search</span>
           </button>
         </div>
 
         <!-- Optional Detailed Filters (Fully Optional) -->
         <div class="filter-row">
           <div class="filter-col">
-            <label class="filter-label">Category</label>
+            <label class="filter-label" data-i18n="filter_category">Category</label>
             <select name="category" class="form-select filter-select" onchange="document.getElementById('searchForm').submit()">
-              <option value="">All Categories (Optional)</option>
+              <option value="" data-i18n="opt_all_categories">All Categories (Optional)</option>
               {{#each categories}}
                 <option value="{{this}}" {{#if (eq ../query.category this)}}selected{{/if}}>{{this}}</option>
               {{/each}}
@@ -47,9 +48,9 @@
           </div>
 
           <div class="filter-col">
-            <label class="filter-label">Exact Shelf</label>
+            <label class="filter-label" data-i18n="filter_shelf">Exact Shelf</label>
             <select name="shelfNumber" class="form-select filter-select" onchange="document.getElementById('searchForm').submit()">
-              <option value="">All Shelves (Optional)</option>
+              <option value="" data-i18n="opt_all_shelves">All Shelves (Optional)</option>
               {{#each shelves}}
                 <option value="{{this}}" {{#if (eq ../query.shelfNumber this)}}selected{{/if}}>Shelf: {{this}}</option>
               {{/each}}
@@ -57,23 +58,24 @@
           </div>
 
           <div class="filter-col">
-            <label class="filter-label">Author</label>
+            <label class="filter-label" data-i18n="filter_author">Author</label>
             <input 
               type="text" 
               name="author" 
               class="form-control filter-input" 
               placeholder="Author name..." 
+              data-i18n-placeholder="placeholder_author"
               value="{{query.author}}"
             >
           </div>
 
           <div class="filter-col">
-            <label class="filter-label">Sort By</label>
+            <label class="filter-label" data-i18n="filter_sort">Sort By</label>
             <select name="sort" class="form-select filter-select" onchange="document.getElementById('searchForm').submit()">
-              <option value="newest" {{#if (eq query.sort 'newest')}}selected{{/if}}>Recently Added</option>
-              <option value="title_asc" {{#if (eq query.sort 'title_asc')}}selected{{/if}}>Book Title (A-Z)</option>
-              <option value="author_asc" {{#if (eq query.sort 'author_asc')}}selected{{/if}}>Author (A-Z)</option>
-              <option value="shelf_asc" {{#if (eq query.sort 'shelf_asc')}}selected{{/if}}>Shelf Number</option>
+              <option value="newest" {{#if (eq query.sort 'newest')}}selected{{/if}} data-i18n="sort_newest">Recently Added</option>
+              <option value="title_asc" {{#if (eq query.sort 'title_asc')}}selected{{/if}} data-i18n="sort_title_asc">Book Title (A-Z)</option>
+              <option value="author_asc" {{#if (eq query.sort 'author_asc')}}selected{{/if}} data-i18n="sort_author_asc">Author (A-Z)</option>
+              <option value="shelf_asc" {{#if (eq query.sort 'shelf_asc')}}selected{{/if}} data-i18n="sort_shelf_asc">Shelf Number</option>
             </select>
           </div>
         </div>
