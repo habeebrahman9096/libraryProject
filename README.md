@@ -134,3 +134,30 @@ Visit the application in your browser:
 * **Admin Login**: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
   * Default Username: `admin`
   * Default Password: `admin123`
+
+---
+
+## Deploying to Vercel
+
+This repository is pre-configured for Vercel deployment with serverless functions and Handlebars template bundling via `vercel.json` and `api/index.js`.
+
+### 1. MongoDB Atlas Setup
+Because Vercel runs in a serverless cloud environment:
+1. Create a free cluster at [MongoDB Atlas](https://www.mongodb.com/atlas).
+2. Under **Network Access**, click **Add IP Address** and choose **Allow Access From Anywhere (`0.0.0.0/0`)** (required for Vercel's dynamic IP addresses).
+3. Under **Database Access**, create a database user and password.
+4. Copy your connection string (`mongodb+srv://.../islamicLibrary?retryWrites=true&w=majority`).
+
+### 2. Configure Vercel Environment Variables
+In your Vercel Project Dashboard under **Settings > Environment Variables**, add:
+
+| Key | Example Value |
+|---|---|
+| `MONGODB_URI` | `mongodb+srv://user:pass@cluster0.mongodb.net/islamicLibrary?retryWrites=true&w=majority` |
+| `ADMIN_USERNAME` | `admin` |
+| `ADMIN_PASSWORD` | `yourSecretAdminPassword` |
+| `SESSION_NAME` | `LIBRARY_SESSION` |
+| `SESSION_SECRET` | `a_long_random_secret_string_for_sessions` |
+
+### 3. Regarding `npm warn Unknown env config "cache-dir"`
+This is a benign deprecation warning emitted by npm inside Vercel's build image when Vercel passes `npm_config_cache_dir`. The repository includes an `.npmrc` and engine configuration to keep builds clean.

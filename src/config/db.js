@@ -1,18 +1,56 @@
 const mongoose = require('mongoose');
 
+// Cache database connection globally for serverless environments (like Vercel)
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
 const connectDB = async () => {
   const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/islamicLibrary';
-  try {
-    const conn = await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 5000
+
+  // Check if we are running in Vercel with a localhost address
+  if (process.env.VERCEL && (uri.includes('127.0.0.1') || uri.includes('localhost'))) {
+    console.warn('[Vercel Warning] Running on Vercel but MONGODB_URI is set to localhost!');
+    console.warn('[Vercel Warning] Please add a MongoDB Atlas URI (mongodb+srv://...) in your Vercel Project Settings.');
+  }
+
+  if (cached.conn && mongoose.connection.readyState === 1) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
+      bufferCommands: false
+    };
+
+    cached.promise = mongoose.connect(uri, opts).then((mongooseInstance) => {
+      console.log(`[Database] MongoDB Connected: ${mongooseInstance.connection.host}/${mongooseInstance.connection.name}`);
+      return mongooseInstance;
+    }).catch((err) => {
+      console.error(`[Database Error] Connection failed: ${err.message}`);
+      cached.promise = null;
+      throw err;
     });
-    console.log(`[Database] MongoDB Connected: ${conn.connection.host}/${conn.connection.name}`);
-    return conn;
+  }
+
+  try {
+    cached.conn = await cached.promise;
+    return cached.conn;
   } catch (err) {
-    console.error(`[Database Error] Failed to connect to MongoDB: ${err.message}`);
-    console.warn(`[Database Tip] Ensure MongoDB is running or check your MONGODB_URI in the .env file.`);
-    // Do not terminate process immediately so the app can show informative status in development if needed
+    cached.promise = null;
+    return null;
   }
 };
 
-module.exports = connectDB;
+const isConnected = () => {
+  return mongoose.connection.readyState === 1;
+};
+
+module.exports = {
+  connectDB,
+  isConnected
+};
