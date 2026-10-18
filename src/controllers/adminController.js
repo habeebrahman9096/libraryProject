@@ -1,4 +1,5 @@
 const Book = require('../models/Book');
+const { parseCsvString, getSampleCsvContent } = require('../utils/csvHelper');
 
 // Admin Dashboard - View and manage all books
 const getDashboard = async (req, res) => {
@@ -240,11 +241,109 @@ const deleteBook = async (req, res) => {
   }
 };
 
+// Download Sample / Demo CSV Template File
+const downloadSampleCsv = (req, res) => {
+  const csvData = getSampleCsvContent();
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', 'attachment; filename="sample_books_template.csv"');
+  return res.send(csvData);
+};
+
+// Render CSV Import Page
+const getImportCsvPage = (req, res) => {
+  res.render('admin/import-csv', {
+    title: 'Import Books via CSV - Islamic Library'
+  });
+};
+
+// Handle CSV File Upload & Processing
+const postImportCsv = async (req, res) => {
+  if (!req.file || !req.file.buffer) {
+    req.flash('error', 'Please select a valid CSV file to upload.');
+    return res.redirect('/admin/books/import');
+  }
+
+  try {
+    const csvContent = req.file.buffer.toString('utf8');
+    const records = parseCsvString(csvContent);
+
+    if (!records || records.length === 0) {
+      req.flash('error', 'No valid book records found in the uploaded CSV file. Please check format.');
+      return res.redirect('/admin/books/import');
+    }
+
+    let insertedCount = 0;
+    let skippedCount = 0;
+    let updatedCount = 0;
+    const errors = [];
+
+    const handleDuplicate = req.body.duplicateAction || 'skip'; // 'skip' or 'update'
+
+    for (let i = 0; i < records.length; i++) {
+      const row = records[i];
+      const rowNum = i + 2; // header is row 1
+
+      // Validate required fields
+      if (!row.bookName || !row.author || !row.category || !row.libraryCode || !row.shelfNumber) {
+        skippedCount++;
+        errors.push(`Row ${rowNum}: Incomplete fields for "${row.bookName || 'Unknown'}"`);
+        continue;
+      }
+
+      const normalizedCode = row.libraryCode.trim().toUpperCase();
+      const existing = await Book.findOne({ libraryCode: normalizedCode });
+
+      if (existing) {
+        if (handleDuplicate === 'update') {
+          existing.bookName = row.bookName.trim();
+          existing.author = row.author.trim();
+          existing.category = row.category.trim();
+          existing.shelfNumber = row.shelfNumber.trim().toUpperCase();
+          await existing.save();
+          updatedCount++;
+        } else {
+          skippedCount++;
+          errors.push(`Row ${rowNum}: Code "${normalizedCode}" already in use`);
+        }
+      } else {
+        const newBook = new Book({
+          bookName: row.bookName.trim(),
+          author: row.author.trim(),
+          category: row.category.trim(),
+          libraryCode: normalizedCode,
+          shelfNumber: row.shelfNumber.trim().toUpperCase()
+        });
+        await newBook.save();
+        insertedCount++;
+      }
+    }
+
+    let message = `CSV Import completed: ${insertedCount} new books added.`;
+    if (updatedCount > 0) message += ` ${updatedCount} books updated.`;
+    if (skippedCount > 0) message += ` ${skippedCount} rows skipped.`;
+
+    if (insertedCount > 0 || updatedCount > 0) {
+      req.flash('success', message);
+    } else {
+      req.flash('error', message + ' No new books were added.');
+    }
+
+    return res.redirect('/admin/dashboard');
+  } catch (error) {
+    console.error('Error processing CSV import:', error);
+    req.flash('error', `CSV Processing failed: ${error.message}`);
+    return res.redirect('/admin/books/import');
+  }
+};
+
 module.exports = {
   getDashboard,
   getAddBook,
   postAddBook,
   getEditBook,
   putEditBook,
-  deleteBook
+  deleteBook,
+  downloadSampleCsv,
+  getImportCsvPage,
+  postImportCsv
 };

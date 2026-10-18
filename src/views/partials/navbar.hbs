@@ -9,7 +9,7 @@
       </div>
       <div class="brand-text">
         <span class="brand-name">Islamic Library</span>
-        <span class="brand-tagline">Shelf Locator & Catalogue</span>
+        <span class="brand-tagline">Shelf Locator &amp; Catalogue</span>
       </div>
     </a>
 
@@ -37,16 +37,22 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="/admin/books/import" class="nav-link {{#if (eq currentPath '/admin/books/import')}}active{{/if}}" title="Upload books via CSV">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              Import CSV
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="/admin/books/new" class="btn btn-sm btn-primary {{#if (eq currentPath '/admin/books/new')}}active{{/if}}">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
               Add Book
             </a>
           </li>
-          <li class="nav-item nav-user-info">
-            <span class="user-badge" title="Logged in as Admin">
+          <li class="nav-item">
+            <a href="/admin/settings" class="user-badge {{#if (eq currentPath '/admin/settings')}}active{{/if}}" title="Admin Account Settings (CREDINTIALS)">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
               {{adminUsername}}
-            </span>
+            </a>
           </li>
           <li class="nav-item">
             <form action="/admin/logout" method="POST" class="logout-form">

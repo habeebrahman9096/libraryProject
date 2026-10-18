@@ -14,7 +14,11 @@ A modern, responsive, and scalable library web application built with **MongoDB*
 * **Multilingual Unicode Support**: Fully supports Arabic, English, Malayalam, and Urdu titles and scholar names.
 
 ### 2. Administrative Control Panel (Protected Area)
-* **Secure Authentication**: Protected via credentials configured in `.env`.
+* **Secure Authentication**: Protected via credentials stored in the `CREDINTIALS` collection (with automatic fallback to `.env`).
+* **Admin Profile & Settings**: Admin can change their username and password directly from `/admin/settings`, securely saved in the `CREDINTIALS` collection with bcrypt hashing.
+* **Bulk Import via CSV**: Upload a spreadsheet (.csv) to bulk import books into the library with authors, categories, codes, and exact shelf numbers.
+* **Structure Demo Download**: One-click download button (`/admin/books/sample-csv`) providing an official sample CSV template with UTF-8 BOM encoding for Excel/Sheets.
+* **Duplicate Handling**: Configurable duplicate code action (skip duplicates or update existing books).
 * **Persistent 30-Day Session**: Sessions are named `LIBRARY_SESSION` and stored in MongoDB using `connect-mongo`, ensuring logins survive server restarts for 30 days.
 * **Complete CRUD**:
   * **Add Book**: Add books with validation for Book Name, Author, Category, unique Library Code, and Shelf Number.
@@ -30,9 +34,11 @@ A modern, responsive, and scalable library web application built with **MongoDB*
 
 ---
 
-## Database Schema (`Book`)
+## Database Collections
 
 Stored in the `islamicLibrary` MongoDB database:
+
+### 1. `books` Collection (`Book` model)
 
 | Field | Type | Description |
 |---|---|---|
@@ -43,6 +49,15 @@ Stored in the `islamicLibrary` MongoDB database:
 | `shelfNumber` | String | Physical shelf location (e.g., `A-1`, `B-04`) (required, uppercase, indexed) |
 | `createdAt` | Date | Timestamp of cataloging |
 | `updatedAt` | Date | Timestamp of latest record modification |
+
+### 2. `CREDINTIALS` Collection (`Credential` model)
+
+| Field | Type | Description |
+|---|---|---|
+| `username` | String | Admin username (unique, required) |
+| `password` | String | Salted and hashed password via `bcryptjs` |
+| `createdAt` | Date | Timestamp of creation |
+| `updatedAt` | Date | Timestamp of latest credential update |
 
 ---
 

@@ -118,7 +118,7 @@ const sampleBooks = [
 ];
 
 const seedDatabase = async () => {
-  const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/islamicLibrary';
+  const uri = process.env.MONGODB_URI;
   
   try {
     console.log(`Connecting to MongoDB at: ${uri}`);
@@ -137,6 +137,13 @@ const seedDatabase = async () => {
     const inserted = await Book.insertMany(sampleBooks);
     console.log(`Successfully seeded ${inserted.length} Islamic library books with shelf numbers!`);
     console.log('Sample shelves populated: A-1, A-2, A-3, B-1, C-1, C-2, C-3, D-1, E-1, F-1, G-1');
+
+    // Also seed default admin into CREDINTIALS collection
+    const Credential = require('./src/models/Credential');
+    const admin = await Credential.getOrSeedInitialAdmin();
+    if (admin) {
+      console.log(`Admin credentials initialized in CREDINTIALS collection (Username: ${admin.username})`);
+    }
 
     await mongoose.disconnect();
     console.log('Database disconnected successfully.');

@@ -1,0 +1,135 @@
+<div class="container section-padding-sm">
+  <div class="breadcrumb">
+    <a href="/admin/dashboard">&larr; Back to Dashboard</a>
+    <span>/</span>
+    <span>Import Books via CSV</span>
+  </div>
+
+  <div class="form-card-container">
+    <div class="form-card" style="max-width: 800px;">
+      <div class="form-header">
+        <div class="form-header-icon bg-emerald-subtle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+        </div>
+        <div style="flex: 1;">
+          <h1 class="form-title">Bulk Import Books from CSV</h1>
+          <p class="form-subtitle">Upload a spreadsheet of books with authors, categories, codes, and exact shelf numbers.</p>
+        </div>
+        <div>
+          <a href="/admin/books/sample-csv" class="btn btn-outline" download="sample_books_template.csv" title="Download sample template CSV file">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Demo CSV
+          </a>
+        </div>
+      </div>
+
+      <!-- CSV Upload Form -->
+      <form action="/admin/books/import" method="POST" enctype="multipart/form-data" class="book-form">
+        <div class="form-group">
+          <label for="csvFile" class="form-label required">Select CSV Spreadsheet File</label>
+          <input 
+            type="file" 
+            id="csvFile" 
+            name="csvFile" 
+            class="form-control" 
+            accept=".csv, text/csv, application/vnd.ms-excel" 
+            required
+            style="padding: 0.85rem;"
+          >
+          <span class="form-hint">Accepted formats: .csv (Comma-Separated Values). Encoded in UTF-8.</span>
+        </div>
+
+        <div class="form-group" style="margin-top: 0.5rem;">
+          <label class="form-label">Duplicate Library Code Behavior</label>
+          <div style="display: flex; gap: 1.5rem; margin-top: 0.35rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+              <input type="radio" name="duplicateAction" value="skip" checked>
+              <span>Skip duplicate codes (keep existing books)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
+              <input type="radio" name="duplicateAction" value="update">
+              <span>Update existing book details</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions-bar">
+          <a href="/admin/dashboard" class="btn btn-outline">Cancel</a>
+          <button type="submit" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            Upload and Import Books
+          </button>
+        </div>
+      </form>
+
+      <!-- CSV Demo Structure Guide -->
+      <div style="margin-top: 2.5rem; padding-top: 1.75rem; border-top: 1px dashed var(--border-light);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+          <h3 style="font-size: 1.05rem; font-weight: 700;">CSV Structure Demo</h3>
+          <a href="/admin/books/sample-csv" class="btn btn-sm btn-outline-primary" download="sample_books_template.csv">
+            &darr; Download Demo Template (.csv)
+          </a>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Your CSV file must include these 5 header columns in the first row. Arabic, English, and Malayalam characters are fully supported:
+        </p>
+
+        <div class="table-responsive" style="border: 1px solid var(--border-light); border-radius: var(--radius-sm); margin-bottom: 1rem;">
+          <table class="data-table" style="font-size: 0.85rem;">
+            <thead>
+              <tr style="background-color: var(--bg-subtle);">
+                <th>bookName</th>
+                <th>author</th>
+                <th>category</th>
+                <th>libraryCode</th>
+                <th>shelfNumber</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sahih al-Bukhari (الجامع الصحيح)</td>
+                <td>Imam al-Bukhari</td>
+                <td>Hadith</td>
+                <td><code>HDTH-001</code></td>
+                <td><span class="shelf-badge-table">Shelf A-1</span></td>
+              </tr>
+              <tr>
+                <td>Riyad as-Salihin (رياض الصالحين)</td>
+                <td>Imam an-Nawawi</td>
+                <td>Hadith &amp; Ethics</td>
+                <td><code>HDTH-005</code></td>
+                <td><span class="shelf-badge-table">Shelf A-3</span></td>
+              </tr>
+              <tr>
+                <td>Tafsir al-Qur'an al-Azim</td>
+                <td>Imam Ibn Kathir</td>
+                <td>Tafsir</td>
+                <td><code>TFSR-101</code></td>
+                <td><span class="shelf-badge-table">Shelf B-1</span></td>
+              </tr>
+              <tr>
+                <td>Al-Muwatta (الموطأ)</td>
+                <td>Imam Malik ibn Anas</td>
+                <td>Fiqh</td>
+                <td><code>FQH-201</code></td>
+                <td><span class="shelf-badge-table">Shelf C-1</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="background-color: var(--bg-subtle); padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); font-size: 0.8rem; color: var(--text-secondary);">
+          <strong>Tip:</strong> You can open the downloaded template in Microsoft Excel, Google Sheets, or LibreOffice Calc, add your book catalogue, and click "Save as CSV (UTF-8)".
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
